@@ -2,7 +2,7 @@ class Solution {
     #define MOD 1000000007
     int fun(int n){
         int rev = 0;
-        while(n>0){
+        while(n){
             int k = n % 10;
             rev = rev * 10 + k;
             n = n / 10;
