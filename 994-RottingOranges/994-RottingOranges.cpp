@@ -1,4 +1,4 @@
-// Last updated: 9/6/2025, 9:34:11 AM
+// Last updated: 9/6/2025, 9:35:25 AM
 class Solution {
     int fun(vector<vector<int>>& grid,vector<vector<int>>& vis){
         int m = grid.size();
@@ -10,7 +10,6 @@ class Solution {
                 if(grid[i][j] == 2){
                     // if rotten push into the queue;
                     q.push({i,j});
-                    vis[i][j] = 1;
                 }
             }
         }
@@ -28,8 +27,7 @@ class Solution {
                     int newRow = row + dir[i].first;
                     int newCol = col + dir[i].second;
 
-                    if(newRow >= 0 && newRow<m && newCol>=0 && newCol < n && vis[newRow][newCol] == 0 && grid[newRow][newCol] == 1){
-                        vis[newRow][newCol] = 1;
+                    if(newRow >= 0 && newRow<m && newCol>=0 && newCol < n && grid[newRow][newCol] == 1){
                         q.push({newRow,newCol});
                         grid[newRow][newCol] = 2;
                     }
