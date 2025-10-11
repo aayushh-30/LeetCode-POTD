@@ -1,34 +1,36 @@
+// Last updated: 10/11/2025, 12:03:25 PM
 class Solution {
-#define ll long long 
-private:
-    ll getMaxDamage(vector<ll>& dp, map<int, int>& frequencyMap, vector<int>& uniquePowers, int index) {
-        if (index == uniquePowers.size()) return 0;
-        if (dp[index] != -1) return dp[index];
-        // Option 1: Skip the current element
-        ll skip = getMaxDamage(dp, frequencyMap, uniquePowers, index + 1);
-        // Option 2: Take the current element
-        ll take = 0;
-        int nextIndex = index + 1;
-        while (nextIndex < uniquePowers.size() && uniquePowers[nextIndex] - uniquePowers[index] <= 2) {
-            nextIndex++;
+    #define ll long long
+    unordered_map<int, int> mp;
+    vector<ll> dp;
+
+    ll f(int i, vector<int> &power) {
+        if (i >= power.size()) return 0;
+
+        if(dp[i]!=-1) return dp[i];
+        
+        ll noPick = f(i + 1, power);
+
+        
+        ll pick = 0;
+        int j = i;
+        while (j < power.size() && power[j] - power[i] <= 2) {
+            j++;
         }
-        take = ((1ll)*frequencyMap[uniquePowers[index]] * uniquePowers[index]) + getMaxDamage(dp, frequencyMap, uniquePowers, nextIndex);
-        return dp[index] = max(take, skip);
+        pick = (ll)power[i] * mp[power[i]] + f(j, power);
+
+        return dp[i] = max(pick, noPick);
     }
+
 public:
     long long maximumTotalDamage(vector<int>& power) {
-        map<int, int> frequencyMap;
-        vector<int> uniquePowers;
-        // Create frequency map and unique powers list
-        for (auto p : power) {
-            frequencyMap[p]++;
+        sort(power.begin(), power.end());
+        for (auto it : power) {
+            mp[it]++;
         }
-        for (auto it : frequencyMap) {
-            uniquePowers.push_back(it.first);
-        }
-        // Initialize DP array with -1
-        vector<ll> dp(frequencyMap.size(), -1);
-        // Start the recursive function
-        return getMaxDamage(dp, frequencyMap, uniquePowers, 0);
+        dp.resize(1e6,-1);
+        auto last = unique(power.begin(), power.end());
+        power.erase(last, power.end());
+        return f(0, power);
     }
 };
