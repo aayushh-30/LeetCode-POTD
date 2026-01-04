@@ -1,30 +1,34 @@
-// Last updated: 1/4/2026, 12:43:26 PM
+// Last updated: 1/4/2026, 1:30:52 PM
 1class Solution {
-2    int countOfDivisor(int n){
-3        int count = 0;
-4        int sum = 0;
-5        int i;
-6        for(i=1;i*i<n;i++){
-7            if(n % i == 0){
-8                count+=2;
-9                sum += (i)+(n/i);
-10            }
-11
-12        }
-13        if(i*i == n){
-14            count++;
-15            sum += i;
-16        }
-17        return count==4?sum:0;
-18    }
-19public:
-20    int sumFourDivisors(vector<int>& nums) {
-21        int sum = 0;
-22        for(int i=0;i<nums.size();i++){
-23           
-24            sum += countOfDivisor(nums[i]);
-25        }
-26        return sum;
-27        
-28    }
-29};
+2    void buildSeive(int n, vector<int>& count, vector<int>& sum) {
+3        for (int i = 1; i * i <= n; ++i) {
+4            for (int j = i * i; j <= n; j += i) {
+5                count[j]++;
+6                sum[j] += i;
+7
+8                if (i != j / i) {
+9                    count[j]++;
+10                    sum[j] += j / i;
+11                }
+12            }
+13        }
+14    }
+15
+16public:
+17    int sumFourDivisors(vector<int>& nums) {
+18        int maxi = *max_element(nums.begin(), nums.end());
+19
+20        vector<int> count(maxi + 1, 0);
+21        vector<int> sum(maxi + 1, 0);
+22
+23        buildSeive(maxi, count, sum);
+24
+25        int res = 0;
+26        for (int x : nums) {
+27            if (count[x] == 4)
+28                res += sum[x];
+29        }
+30        return res;
+31    }
+32};
+33
