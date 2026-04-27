@@ -1,4 +1,4 @@
-// Last updated: 4/28/2026, 12:17:04 AM
+// Last updated: 4/28/2026, 12:17:19 AM
 1class Solution {
 2    bool cntX(int n, int x, int& ld) {
 3        int cnt = 0;
@@ -15,8 +15,6 @@
 14        int ld = 1e9;
 15        
 16        bool hd = cntX(n,x,ld);
-17
-18        cout<< hd<<endl;
-19        return hd && (ld != x);
-20    }
-21};
+17        return hd && (ld != x);
+18    }
+19};
